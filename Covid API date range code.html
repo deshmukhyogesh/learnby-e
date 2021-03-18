@@ -1,0 +1,107 @@
+<!DOCTYPE html> 
+<html> 
+      
+<head> 
+    <title> 
+        Covid Data from date range 
+    </title> 
+      
+    <link href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/ui-lightness/jquery-ui.css'
+          rel='stylesheet'> 
+      
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" > </script> 
+      
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" ></script> 
+    <script> 
+        $(document).ready(function() { 
+          
+            $(function() { 
+                $( "#my_date_picker" ).datepicker({
+                  dateFormat: 'yy-mm-dd'
+                }); 
+
+            }); 
+            $(function() { 
+                $( "#my_date_picker1" ).datepicker({
+                dateFormat: 'yy-mm-dd'   
+                }); 
+               
+            }); 
+
+           $('#btnSubmit').click(function() {
+    			 
+           		
+    			var fromdate=$("#my_date_picker").val();
+                var todate=$("#my_date_picker1").val(); 
+
+                fromdate = fromdate+"T00:00:00Z";
+                todate = todate+"T00:00:00Z";  
+
+                          
+                $.ajax({
+                      type: "GET",
+                      url: "https://api.covid19api.com/country/India/status/confirmed?from="+fromdate+"&to="+todate+"",
+                      contentType: "application/json; charset=utf-8",
+                      dataType: "json",
+                      success: function(response){
+                              console.log(response);
+                              var i;
+							  
+							  $.each(response, function(index,item){
+							 // alert(item.Cases);
+							    markup="<tr><td>" + item.Country + "</td><td>" + item.CountryCode + "</td><td>" + item.Province + "</td><td>" + item.City + "</td><td>" +item.CityCode+ "</td><td>"+item.Lat+"</td><td>"+item.Lon+"</td><td>"+item.Cases+"</td><td>"+item.Status+"</td><td>"+item.Date+"</td></tr>";               
+      
+                                  $("#table1 tbody").append(markup);
+							  });
+							  
+
+                              
+                       
+                              }
+                      });
+
+                                       
+            });
+             $('#clear').click(function() {
+             	$("#table1 tbody").detach();
+
+             });
+
+
+
+        }) 
+        
+    </script> 
+
+</head> 
+  
+<body> 
+   From Date: <input type="text" id="my_date_picker"><br>
+  To Date: <input type="text" id="my_date_picker1"><br> 
+    
+<input type="button" value="Submit" id="btnSubmit">
+<input type="button" value ="Clear" id="clear"><br><br>
+  <table id="table1" class=" table-responsive  " border="1" >
+    <thead>
+           <tr>
+            <th>Country</th>
+            <th>CountryCode</th>
+            <th>Province</th>
+            <th>City</th>
+            <th>CityCode</th>
+            <th>Lat</th>
+            <th>Lon</th>
+            <th>Cases</th>
+            <th>Status</th>
+            <th>Date</th>
+          </tr>
+        
+    </thead> 
+    <tbody>
+       
+    </tbody>
+</table> 
+
+</body> 
+  
+</html> 
