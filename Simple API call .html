@@ -1,0 +1,31 @@
+<!DOCTYPE html> 
+<html> 
+      
+<head> 
+    <title> Quote API  </title> 
+        
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" > </script> 
+     <script> 
+        $(document).ready(function() { 
+          
+            $('#btnSubmit').click(function() {
+    		    $.ajax({
+                      type: "GET",
+                      url: "http://api.kanye.rest",
+                      dataType: "json",
+                      success: function(response){
+                              console.log(response);
+                             //alert(response.quote);
+							  $('#quote').html(response.quote);
+			                  }
+                      });
+                });
+        }); 
+         </script> 
+</head> 
+<body> 
+ <input type="button" value="Click here New Quote" id="btnSubmit">
+<br><br>
+ <h1 id="quote"> </h1> 
+</body> 
+</html> 
